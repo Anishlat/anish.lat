@@ -26,6 +26,8 @@ html {
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     scrollbar-width: none;
+    overflow: hidden;
+    height: 100%;
 }
 
 html::-webkit-scrollbar {
@@ -37,6 +39,8 @@ body {
     background: var(--bg);
     color: var(--text);
     line-height: 1.7;
+    overflow: hidden;
+    height: 100%;
 }
 
 ::selection {
@@ -78,7 +82,7 @@ main {
 }
 
 .section {
-    min-height: 100vh;
+    min-height: 100dvh;
     display: flex;
     align-items: center;
 }
