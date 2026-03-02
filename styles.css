@@ -1,0 +1,264 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   MINIMALIST DARK — heettike-inspired + full-page Game of Life
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+    --bg: #000;
+    --text: #fff;
+    --text-60: rgba(255, 255, 255, 0.6);
+    --text-35: rgba(255, 255, 255, 0.35);
+    --text-20: rgba(255, 255, 255, 0.2);
+    --font: 'Ovo', 'Georgia', serif;
+    --max-w: 780px;
+}
+
+/* Reset */
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    scrollbar-width: none;
+}
+
+html::-webkit-scrollbar {
+    display: none;
+}
+
+body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+}
+
+::selection {
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
+}
+
+/* ─── Full-Page Game of Life Canvas ─────────────────────────────────────── */
+.life-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 50;
+    pointer-events: none;
+}
+
+/* ─── Vignette ──────────────────────────────────────────────────────────── */
+.vignette {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    background:
+        radial-gradient(ellipse at 50% 0%, rgba(40, 80, 160, 0.10) 0%, transparent 60%),
+        radial-gradient(ellipse at 0% 50%, rgba(30, 60, 140, 0.06) 0%, transparent 50%),
+        radial-gradient(ellipse at 100% 50%, rgba(30, 60, 140, 0.06) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 100%, rgba(40, 80, 160, 0.08) 0%, transparent 60%);
+}
+
+/* ─── Layout ────────────────────────────────────────────────────────────── */
+main {
+    position: relative;
+    z-index: 1;
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+.section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+}
+
+/* ─── Reveal ────────────────────────────────────────────────────────────── */
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   HERO
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.hero-name {
+    font-size: 3.8rem;
+    font-weight: 400;
+    line-height: 1.15;
+    margin-bottom: 0.6rem;
+    letter-spacing: -0.01em;
+}
+
+.hero-role {
+    font-size: 1.5rem;
+    color: var(--text-60);
+    margin-bottom: 1.4rem;
+}
+
+.hero-status {
+    font-size: 1.3rem;
+    color: var(--text-60);
+    margin-bottom: 0.4rem;
+}
+
+.hero-status em {
+    font-style: italic;
+    color: var(--text);
+}
+
+.hero-status a {
+    color: var(--text);
+    text-decoration: none;
+    border-bottom: 1px solid var(--text-20);
+    transition: color 0.3s, border-color 0.3s;
+}
+
+.hero-status a:hover {
+    color: var(--text);
+    border-color: var(--text-60);
+}
+
+.hero-past {
+    font-size: 1.15rem;
+    color: var(--text-35);
+    margin-bottom: 0.4rem;
+    line-height: 1.8;
+}
+
+.hero-past:first-of-type {
+    margin-top: 1rem;
+}
+
+.hero-past+.hero-links {
+    margin-top: 1.6rem;
+}
+
+.hero-past a {
+    color: var(--text-35);
+    text-decoration: none;
+    border-bottom: 1px solid var(--text-20);
+    transition: color 0.3s, border-color 0.3s;
+}
+
+.hero-past a:hover {
+    color: var(--text-60);
+    border-color: var(--text-60);
+}
+
+.hero-links {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.hero-links a {
+    font-size: 1.15rem;
+    color: var(--text-60);
+    text-decoration: none;
+    border-bottom: 1px solid var(--text-20);
+    padding-bottom: 1px;
+    transition: color 0.3s, border-color 0.3s;
+}
+
+.hero-links a:hover {
+    color: var(--text);
+    border-color: var(--text-60);
+}
+
+/* ─── Responsive ────────────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+    main {
+        padding: 0 20px;
+    }
+
+    .section {
+        align-items: flex-start;
+        padding-top: 25vh;
+    }
+
+    .hero-name {
+        font-size: 2.4rem;
+    }
+
+    .hero-role {
+        font-size: 1.1rem;
+    }
+
+    .hero-status {
+        font-size: 1.05rem;
+    }
+
+    .hero-past {
+        font-size: 0.95rem;
+    }
+
+    .hero-links {
+        gap: 1.2rem;
+    }
+
+    .hero-links a {
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 400px) {
+    main {
+        padding: 0 16px;
+    }
+
+    .hero-name {
+        font-size: 2rem;
+    }
+
+    .hero-role {
+        font-size: 1rem;
+    }
+
+    .hero-status {
+        font-size: 0.95rem;
+        word-break: break-word;
+    }
+
+    .hero-past {
+        font-size: 0.9rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+
+    .reveal {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+.hero-links a:focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.4);
+    outline-offset: 4px;
+}
