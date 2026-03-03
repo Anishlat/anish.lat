@@ -168,6 +168,10 @@ function initGameOfLife() {
         if (now - lastSpawn < 80) return;
         lastSpawn = now;
 
+        // Don't spawn cells over the text content
+        const el = document.elementFromPoint(e.clientX, e.clientY);
+        if (el && el.closest('main')) return;
+
         const col = Math.floor(e.clientX / CELL_SIZE);
         const row = Math.floor(e.clientY / CELL_SIZE);
 
